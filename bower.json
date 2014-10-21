@@ -1,0 +1,19 @@
+{
+  "name": "angular-refresher",
+  "version": "0.0.0",
+  "authors": [
+    "makotot <makoto.ttn@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.2.23",
+    "normalize-css": "~3.0.1"
+  }
+}

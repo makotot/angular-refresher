@@ -1,0 +1,11 @@
+---
+title: angular-refresher
+---
+
+<div refresher refresher-url="https://api.github.com/users/makotot/starred" refresher-items="repos" refresher-timer="300">
+	<ul class="main-list">
+		<li ng-repeat="repo in repos">
+			<a ng-href="<% repo.html_url %>" ng-bind="repo.full_name"></a>
+		</li>
+	</ul>
+</div>

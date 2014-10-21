@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html ng-app="mainApp">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="./css/lib/normalize.css">
+		<link rel="stylesheet" href="./css/index.css">
+		<link rel="stylesheet" href="./css/angular-refresher.css">
+		<title>{{title}}</title>
+	</head>
+	<body ng-controller="mainCtrl">
+
+		<div class="main">
+			<h1 class="main__headline">{{title}}</h1>
+			{{> body}}
+		</div>
+
+		<script src="./js/lib/angular.min.js"></script>
+		<script src="./js/app.js"></script>
+		<script src="./js/angular-refresher.js"></script>
+	</body>
+</html>
