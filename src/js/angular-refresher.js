@@ -5,7 +5,7 @@
   ngModule
     .factory('refresher', ['$document', '$http', '$q', '$timeout', function ($document, $http, $q, $timeout) {
       var $el = angular.element,
-        $spinner = $el('<div class="spinner--circle"><div class="spinner--circle__inner"></div></div>');
+        $spinner = $el('<div class="refresher-spinner--circle"><div class="refresher-spinner--circle__inner"></div></div>');
 
       return {
         get: function (url) {
