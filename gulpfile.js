@@ -115,4 +115,5 @@ gulp.task('watch', function () {
 });
 
 gulp.task('serve', ['compile', 'browser-sync', 'watch']);
+gulp.task('deploy', ['compile']);
 

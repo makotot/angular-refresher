@@ -1,0 +1,27 @@
+env:
+  global:
+    - GH_REPO="makotot/angular-refresher"
+    - GIT_COMMITTER_NAME=makotot
+    - GIT_COMMITTER_EMAIL=makoto.ttn@gmail.com
+    - GIT_AUTHOR_NAME=makotot
+    - GIT_AUTHOR_EMAIL=makoto.ttn@gmail.com
+    - secure: A4hGQ+5kxM415zUAMZhJVAxB+Wc/QLCYFiCEpuzRswSuYAutbhV+uxTpNUETYzZXaUunpWLgcX1UvlAmAJGuI2fW/T6RYq0n43poq6Zvs91UCDc07Ho00oQG6vR30adP3X9tzeO88u85cjfpV2c5BIYzhCrYXpqzL+QlDv5Sa4U=
+
+language: node_js
+
+node_js:
+  - "0.10"
+
+branches:
+  only:
+    - master
+
+before_script:
+  - npm install -g gulp
+  - gem install sass
+
+script:
+  - gulp deploy
+
+after_success:
+  - ./deploy.sh
