@@ -1,10 +1,9 @@
 {
   "name": "angular-refresher",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "angular directive for pull to refresh and page visibility.",
+  "main": "gulpfile.js",
   "scripts": {
-    "test": ""
   },
   "author": "makotot",
   "license": "MIT",
