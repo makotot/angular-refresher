@@ -49,7 +49,7 @@
         },
 
         startPull: function (ev) {
-          this.positionY = ev.targetTouches[0].pageY;
+          this.positionY = this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY;
           this.isTouchStart = true;
         },
 
@@ -58,7 +58,7 @@
             return;
           }
 
-          this.translateY(target, (ev.targetTouches[0].pageY - this.positionY));
+          this.translateY(target, ((this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY) - this.positionY));
         },
 
         endPull: function (target, ev) {
@@ -76,17 +76,24 @@
           });
         },
 
+        isTouchSupport: 'ontouchstart' in window,
+
         attachEvent: function (attr, scope, elem) {
-          var self = this;
+          var self = this,
+            touchEvent = {
+              start: this.isTouchSupport ? 'touchstart' : 'mousedown',
+              move: this.isTouchSupport ? 'touchmove' : 'mousemove',
+              end: this.isTouchSupport ? 'touchend' : 'mouseup'
+            };
 
           elem
-            .on('touchstart', function (ev) {
+            .on(touchEvent.start, function (ev) {
               self.startPull(ev);
             })
-            .on('touchmove', function (ev) {
+            .on(touchEvent.move, function (ev) {
               self.move(this, ev);
             })
-            .on('touchend', function (ev) {
+            .on(touchEvent.end, function (ev) {
               self.endPull(this, ev);
               self.render(attr, scope, elem);
             });
@@ -95,6 +102,7 @@
             self.render(attr, scope, elem);
           });
         }
+
       };
     }])
     .directive('refresher', ['refresher', function (refresher) {
