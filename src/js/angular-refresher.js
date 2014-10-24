@@ -5,7 +5,13 @@
   ngModule
     .factory('refresher', ['$document', '$http', '$q', '$timeout', function ($document, $http, $q, $timeout) {
       var $el = angular.element,
-        $spinner = $el('<div class="refresher-spinner--circle"><div class="refresher-spinner--circle__inner"></div></div>');
+        $spinner = $el('<div class="refresher-spinner--circle"><div class="refresher-spinner--circle__inner"></div></div>'),
+        isTouchSupport = 'ontouchstart' in window,
+        touchEvent = {
+          start: isTouchSupport ? 'touchstart' : 'mousedown',
+          move: isTouchSupport ? 'touchmove' : 'mousemove',
+          end: isTouchSupport ? 'touchend' : 'mouseup'
+        };
 
       return {
         get: function (url) {
@@ -48,9 +54,25 @@
           $spinner.remove();
         },
 
-        startPull: function (ev) {
+//        startPull: function (ev) {
+//          this.positionY = this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY;
+//          this.isTouchStart = true;
+//        },
+
+        startPull: function (ev, attr, scope, elem) {
           this.positionY = this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY;
           this.isTouchStart = true;
+
+          var self = this;
+
+          elem
+            .on(touchEvent.move, function (e) {
+              self.move(this, e);
+            })
+            .on(touchEvent.end, function (e) {
+              self.endPull(this, e);
+              self.render(attr, scope, elem);
+            });
         },
 
         move: function (target, ev) {
@@ -76,27 +98,22 @@
           });
         },
 
-        isTouchSupport: 'ontouchstart' in window,
 
         attachEvent: function (attr, scope, elem) {
-          var self = this,
-            touchEvent = {
-              start: this.isTouchSupport ? 'touchstart' : 'mousedown',
-              move: this.isTouchSupport ? 'touchmove' : 'mousemove',
-              end: this.isTouchSupport ? 'touchend' : 'mouseup'
-            };
+          var self = this;
 
           elem
             .on(touchEvent.start, function (ev) {
-              self.startPull(ev);
+//              self.startPull(ev);
+              self.startPull(ev, attr, scope, elem);
             })
-            .on(touchEvent.move, function (ev) {
-              self.move(this, ev);
-            })
-            .on(touchEvent.end, function (ev) {
-              self.endPull(this, ev);
-              self.render(attr, scope, elem);
-            });
+//            .on(touchEvent.move, function (ev) {
+//              self.move(this, ev);
+//            })
+//            .on(touchEvent.end, function (ev) {
+//              self.endPull(this, ev);
+//              self.render(attr, scope, elem);
+//            });
 
           $document.on('visibilitychange', function () {
             self.render(attr, scope, elem);
