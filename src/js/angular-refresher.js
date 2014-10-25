@@ -13,6 +13,10 @@
           end: isTouchSupport ? 'touchend' : 'mouseup'
         };
 
+      function preventEvent (ev) {
+        return ev.preventDefault();
+      }
+
       return {
         get: function (url) {
           var q = $q.defer();
@@ -54,23 +58,22 @@
           $spinner.remove();
         },
 
-//        startPull: function (ev) {
-//          this.positionY = this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY;
-//          this.isTouchStart = true;
-//        },
-
         startPull: function (ev, attr, scope, elem) {
           this.positionY = this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY;
           this.isTouchStart = true;
 
           var self = this;
 
+          if (!isTouchSupport) {
+            elem.on('click', preventEvent);
+          }
+
           elem
             .on(touchEvent.move, function (e) {
               self.move(this, e);
             })
             .on(touchEvent.end, function (e) {
-              self.endPull(this, e);
+              self.endPull(this, e, elem);
               self.render(attr, scope, elem);
             });
         },
@@ -83,9 +86,13 @@
           this.translateY(target, ((this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY) - this.positionY));
         },
 
-        endPull: function (target, ev) {
+        endPull: function (target, ev, elem) {
           this.isTouchStart = false;
           this.translateY(target, 0);
+
+          if (!isTouchSupport) {
+            elem.off('click', preventEvent);
+          }
         },
 
         translateY: function (target, y) {
@@ -102,18 +109,9 @@
         attachEvent: function (attr, scope, elem) {
           var self = this;
 
-          elem
-            .on(touchEvent.start, function (ev) {
-//              self.startPull(ev);
-              self.startPull(ev, attr, scope, elem);
-            })
-//            .on(touchEvent.move, function (ev) {
-//              self.move(this, ev);
-//            })
-//            .on(touchEvent.end, function (ev) {
-//              self.endPull(this, ev);
-//              self.render(attr, scope, elem);
-//            });
+          elem.on(touchEvent.start, function (ev) {
+            self.startPull(ev, attr, scope, elem);
+          })
 
           $document.on('visibilitychange', function () {
             self.render(attr, scope, elem);
