@@ -61,7 +61,6 @@
 
         startPull: function (ev, attr, scope, elem) {
           this.positionY = hasTouchSupport ? ev.targetTouches[0].pageY : ev.pageY;
-          this.isTouchStart = true;
           this.isClickEvent = true;
 
           elem.on('click', preventEvent);
@@ -81,9 +80,6 @@
         },
 
         move: function (target, ev, elem) {
-          if (!this.isTouchStart) {
-            return;
-          }
           this.isClickEvent = false;
 
           var distance = ((hasTouchSupport ? ev.targetTouches[0].pageY : ev.pageY) - this.positionY);
@@ -97,7 +93,6 @@
         },
 
         endPull: function (target, ev, elem) {
-          this.isTouchStart = false;
           this.translateY(target, 0);
 
           elem.removeClass('refresher--no-transition');
@@ -115,11 +110,11 @@
 
         translateY: function (target, y) {
           $el(target).css({
-            'webkit-transform': 'translate(0, ' + y + 'px)',
-            'moz-transform': 'translate(0, ' + y + 'px)',
-            'ms-transform': 'translate(0, ' + y + 'px)',
-            'o-transform': 'translate(0, ' + y + 'px)',
-            'transform': 'translate(0, ' + y + 'px)'
+            'webkit-transform': 'translate3d(0, ' + y + 'px, 0)',
+            'moz-transform': 'translate3d(0, ' + y + 'px, 0)',
+            'ms-transform': 'translate3d(0, ' + y + 'px, 0)',
+            'o-transform': 'translate3d(0, ' + y + 'px, 0)',
+            'transform': 'translate3d(0, ' + y + 'px, 0)'
           });
         },
 
