@@ -6,16 +6,17 @@
     .factory('refresher', ['$document', '$http', '$q', '$timeout', function ($document, $http, $q, $timeout) {
       var $el = angular.element,
         $spinner = $el('<div class="refresher-spinner--circle"><div class="refresher-spinner--circle__inner"></div></div>'),
-        isTouchSupport = 'ontouchstart' in window,
+        hasTouchSupport = 'ontouchstart' in window,
         touchEvent = {
-          start: isTouchSupport ? 'touchstart' : 'mousedown',
-          move: isTouchSupport ? 'touchmove' : 'mousemove',
-          end: isTouchSupport ? 'touchend' : 'mouseup'
+          start: hasTouchSupport ? 'touchstart' : 'mousedown',
+          move: hasTouchSupport ? 'touchmove' : 'mousemove',
+          end: hasTouchSupport ? 'touchend' : 'mouseup'
         };
 
       function preventEvent (ev) {
         return ev.preventDefault();
       }
+
 
       return {
         get: function (url) {
@@ -59,18 +60,19 @@
         },
 
         startPull: function (ev, attr, scope, elem) {
-          this.positionY = this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY;
+          this.positionY = hasTouchSupport ? ev.targetTouches[0].pageY : ev.pageY;
           this.isTouchStart = true;
+          this.isClickEvent = true;
+
+          elem.on('click', preventEvent);
+
+          elem.addClass('refresher--no-transition');
 
           var self = this;
 
-          if (!isTouchSupport) {
-            elem.on('click', preventEvent);
-          }
-
           elem
             .on(touchEvent.move, function (e) {
-              self.move(this, e);
+              self.move(this, e, elem);
             })
             .on(touchEvent.end, function (e) {
               self.endPull(this, e, elem);
@@ -78,21 +80,37 @@
             });
         },
 
-        move: function (target, ev) {
+        move: function (target, ev, elem) {
           if (!this.isTouchStart) {
             return;
           }
+          this.isClickEvent = false;
 
-          this.translateY(target, ((this.isTouchSupport ? ev.targetTouches[0].pageY : ev.pageY) - this.positionY));
+          var distance = ((hasTouchSupport ? ev.targetTouches[0].pageY : ev.pageY) - this.positionY);
+
+          if (distance < 0) {
+            this.cancel(elem, target);
+            return;
+          }
+
+          this.translateY(target, distance);
         },
 
         endPull: function (target, ev, elem) {
           this.isTouchStart = false;
           this.translateY(target, 0);
 
-          if (!isTouchSupport) {
+          elem.removeClass('refresher--no-transition');
+
+          if (this.isClickEvent) {
             elem.off('click', preventEvent);
           }
+        },
+
+        cancel: function (elem, target) {
+          this.translateY(target, 0);
+          elem.off(touchEvent.move)
+            .off(touchEvent.end);
         },
 
         translateY: function (target, y) {
@@ -128,13 +146,17 @@
         scope: {
           refresherItems: '='
         },
-        link: function (scope, elem, attrs) {
-          refresher.render(attrs, scope, elem, attrs);
-          refresher.attachEvent(attrs, scope, elem);
+        compile: function (elem, attrs) {
+          elem.addClass('refresher');
 
-          scope.$on('refresher.load', function (ev, data) {
-            scope.refresherItems = data;
-          });
+          return function (scope, elem, attrs) {
+            refresher.render(attrs, scope, elem, attrs);
+            refresher.attachEvent(attrs, scope, elem);
+
+            scope.$on('refresher.load', function (ev, data) {
+              scope.refresherItems = data;
+            });
+          };
         }
 
       };

@@ -1,0 +1,9 @@
+@charset 'utf-8';
+
+.refresher	{
+	transition: transform .3s ease-in;
+}
+
+.refresher--no-transition	{
+	transition: none !important;
+}
