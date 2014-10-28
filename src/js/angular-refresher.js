@@ -93,7 +93,7 @@
         },
 
         endPull: function (target, ev, elem) {
-          this.translateY(target, 0);
+          this.cancel(elem, target);
 
           elem.removeClass('refresher--no-transition');
 
