@@ -1,0 +1,36 @@
+.refresher {
+  -webkit-transition: -webkit-transform .3s ease-in;
+          transition: transform .3s ease-in; }
+
+.refresher--no-transition {
+  -webkit-transition: none !important;
+          transition: none !important; }
+
+.refresher-spinner--circle {
+  padding: 10px; }
+  .refresher-spinner--circle__inner {
+    display: block;
+    margin: 0 auto;
+    width: 20px;
+    height: 20px;
+    border: 5px solid #eee;
+    border-radius: 50%;
+    border-right-color: transparent;
+    -webkit-animation: spin .5s linear infinite;
+            animation: spin .5s linear infinite; }
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg); } }
+
+@keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg); } }

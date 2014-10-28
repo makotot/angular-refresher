@@ -1,0 +1,34 @@
+body {
+  background-color: #4C8AEA;
+  margin: 0;
+  font-family: "Oxygen", sans-serif;
+  font-weight: 300; }
+
+ul, ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; }
+
+p {
+  padding: 0; }
+
+.main {
+  padding: 0 10px; }
+
+.main__headline {
+  padding: 10px 0;
+  margin: 0;
+  color: #fff;
+  font-size: 14px; }
+
+.main-list {
+  padding: 10px 0; }
+  .main-list > li > a {
+    display: block;
+    padding: 20px 10px;
+    background-color: #3470CD;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none; }
+  .main-list > li + li {
+    padding: 10px 0 0; }

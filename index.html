@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="mainApp">
+	<head>
+		<meta charset="utf-8">
+		<link href="http://fonts.googleapis.com/css?family=Oxygen:700,400,300" rel="stylesheet">
+		<link rel="stylesheet" href="./css/lib/normalize.css">
+		<link rel="stylesheet" href="./css/index.css">
+		<link rel="stylesheet" href="./css/angular-refresher.css">
+		<meta name="viewport" content="initial-scale=1.0">
+		<title>angular-refresher</title>
+	</head>
+	<body ng-controller="mainCtrl">
+
+		<div class="main">
+			<h1 class="main__headline">angular-refresher</h1>
+			
+
+<div refresher refresher-url="https://api.github.com/users/makotot/starred" refresher-items="repos" refresher-timer="300">
+	<ul class="main-list">
+		<li ng-repeat="repo in repos">
+			<a ng-href="<% repo.html_url %>" ng-bind="repo.full_name"></a>
+		</li>
+	</ul>
+</div>
+
+		</div>
+
+		<script src="./js/lib/angular.min.js"></script>
+		<script src="./js/app.js"></script>
+		<script src="./js/angular-refresher.js"></script>
+	</body>
+</html>
